@@ -13,8 +13,9 @@ function App() {
   const [cityName, setcityName] = useState("");
   const [loading, setLoading] = useState(false);
   const [city, setCity] = useState("");
-  const [error,setError] = useState(false)
+  const [error,setError] = useState("")
   const [weatherData, setWeatheData] = useState(null);
+  const [showModal, setShowModal] = useState(false)
   console.log(cityName);
   const baseUrl = "https://api.openweathermap.org";
   const apiKey = `bb6451adcc9652478985bc7278005271`;
@@ -81,24 +82,28 @@ useEffect(() => {
     try {
       if (cityName) {
         setLoading(true);
-        const data = await axios.get(
+        setError("")
+        const res = await axios.get(
           `${baseUrl}/data/2.5/weather?q=${cityName}&appid=${apiKey}&units=metric`
         );
-
+if (res.status !== 200){
+          throw new Error("City not found, check your spelling.")
+        }
         
-        setWeatheData(data.data);
+        setWeatheData(res.data);
         setCity(cityName);
-       
-        if (data.cod !== 200) return;
+       setShowModal(false)
+        
 
 
-        console.log(data.data);
+        console.log(res.data);
       }
     } catch (error) {
       console.log(error);
       if (error ){
-        setError(true)
+        setError("City not found, check your spelling or internet connection.")
       }
+      setShowModal(true)
 
     } finally {
       setLoading(false);
@@ -116,6 +121,15 @@ useEffect(() => {
   return (
     <>
       <div className="main-container">
+          {showModal && (
+  <div className="modal-overlay" onClick={() => setShowModal(false)}>
+    <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+      <h2>Error</h2>
+      <p>{error}</p>
+      <button onClick={() => setShowModal(false)}>OK</button>
+    </div>
+  </div>
+)}
         <div className="container">
           <div className="part1">
             <div className="logo">
@@ -131,7 +145,6 @@ useEffect(() => {
                   <input 
                     type="text"
                     name="text"
-                    id="city-input-1"
                     value={cityName}
                     placeholder="Search Location... "
                     autoComplete="off"
@@ -144,23 +157,33 @@ onKeyDown={(e) => {
   }}         
            />
                   <div className="searchimgdub">
-                    <img src={vector} alt="" id="mybutton-1" />
+                    <img src={vector} alt="" />
                   </div>
                 </div>
                 <div className="linedub"></div>
               </div>
             </div>
+
+
             {weatherData && (
               <div className="temp-info">
                 <div>
                   <p id="temperature">{Math.floor(weatherData?.main?.temp)}°</p> 
+                   
                 </div>
+                
                 <div className="city-info">
                   <p id="city">{city}</p>
                   <small id="info">{formatted}</small> 
                 </div>
+                <div className="icon"><img
+        src={`https://openweathermap.org/img/wn/${weatherData.weather[0].icon}@2x.png`}
+        alt={weatherData.weather[0].description}
+        className="weather-icon"
+      /></div>
               </div>
             )}
+            
           </div>
 
           <div className="housing">
@@ -169,7 +192,6 @@ onKeyDown={(e) => {
                 <input
                   type="text"
                   name="text"
-                  id="city-input-2"
                   placeholder="Search Location... "
                   autoComplete="off"
                   value={cityName}
@@ -186,7 +208,6 @@ onKeyDown={(e) => {
                     src={vector}
                     alt=""
                     onClick={() => getWeather(cityName)}
-                    id="mybutton-2"
                   />
                 </div>
               </div>
@@ -196,7 +217,7 @@ onKeyDown={(e) => {
 
               <div id="weather-resort">
                 {loading && <p>Loading...</p>}
-                {error && <p>Error fetching weather details <br/> Make sure you are connected to the internet.</p>}
+                {/* {error && <p>Error fetching weather details <br/> <i>Incorrect city name</i></p>} */}
                 {weatherData && (
                   <>
                     <div class="weatherdiv">
@@ -262,6 +283,7 @@ onKeyDown={(e) => {
           </div>
         </div>
       </div>
+    
     </>
   );
 }

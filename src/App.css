@@ -13,7 +13,6 @@ body {
   background-attachment: scroll;
   background-repeat: no-repeat;
   display: block;
-  background-position: 100% 100%;
 
   background-size: cover;
   height: 100vh;
@@ -101,7 +100,7 @@ input {
 }
 .temp-info {
   display: flex;
-  margin-top: 100%;
+  margin-top: 90%;
 }
 .city-info {
   padding-top: 50px;
@@ -116,6 +115,13 @@ input {
   display: none;
   justify-content: space-between;
 }
+.weather-icon{
+  width: 100px;
+  height: 100px;
+}
+.icon{
+  padding-top: 40px;
+}
 
 @media (max-width: 768px) {
   
@@ -126,7 +132,7 @@ input {
     display: block;
 
     background-size: cover;
-    height: 100vh;
+    height: 800px;
 
     display: flex;
     /* justify-content: space-between; */
@@ -141,6 +147,9 @@ input {
     display: flex;
     margin-top: 102px;
     margin-bottom: 30px;
+  }
+  .icon{
+    padding-top:0px;
   }
   .housing {
     width: 100%;
@@ -219,7 +228,7 @@ input {
     background-repeat: no-repeat;
     display: block;
     background-size: cover;
-    height: 100vh;
+    height: 1000px;
     /* width: 100wh; */
     display: flex;
     /* justify-content: space-between; */
