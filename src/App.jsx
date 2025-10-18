@@ -157,7 +157,10 @@ onKeyDown={(e) => {
   }}         
            />
                   <div className="searchimgdub">
-                    <img src={vector} alt="" />
+                    <img src={vector}
+                     alt=""
+                      onClick={() => getWeather(cityName)}
+                      />
                   </div>
                 </div>
                 <div className="linedub"></div>
@@ -183,7 +186,7 @@ onKeyDown={(e) => {
       /></div>
               </div>
             )}
-            
+
           </div>
 
           <div className="housing">
