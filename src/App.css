@@ -145,7 +145,7 @@ input {
 
   .temp-info {
     display: flex;
-    margin-top: 102px;
+    /* margin-top: px; */
     margin-bottom: 30px;
   }
   .icon{
